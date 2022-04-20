@@ -4,8 +4,9 @@ const S = require('sequelize');
 class State extends S.Model {};
 
 State.init({
-    name: S.STRING,
-    allowNull: false
+    id: { primaryKey: true, type: S.INTEGER},
+    name: S.STRING
 }, {sequelize: db, modelName: 'state'});
+
 
 module.exports = State;

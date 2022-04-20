@@ -1,6 +1,6 @@
 const State = require('./State');
 const Game = require('./Game');
 
-Game.hasOne(State);
+State.hasMany(Game);
 
 module.exports = { State, Game };

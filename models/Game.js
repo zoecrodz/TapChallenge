@@ -4,8 +4,9 @@ const S = require('sequelize');
 class Game extends S.Model {};
 
 Game.init({
-    created: {
-        type: S.DATE,
+    id: {
+        type: S.STRING,
+        primaryKey: true,
         allowNull: false
     },
     cells: {
