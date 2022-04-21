@@ -5,7 +5,7 @@ const db = require('./config');
 
 server.use(express.json());
 server.use(express.urlencoded({extended: false}));
-server.use("/api", routes);
+server.use('/api', routes);
 
 db.sync({ force: false }).then(() => {
     server.listen(3000, () => {
