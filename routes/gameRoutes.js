@@ -3,6 +3,7 @@ const router = express.Router();
 const controller = require('../controllers')
 
 router.get('/:id', controller.findOrCreate);
-router.post('/', controller.saveGame)
+router.get('/', controller.getGames);
+router.post('/', controller.saveGame);
 
 module.exports = router;

@@ -34,9 +34,22 @@ const gameController = {
                 await state.addGame(newGame);
                 const gameCreated = await Game.findByPk(id);
                 const { dataValues } = gameCreated;
-                const formattedData = formatValues({dataValues, state: state.dataValues})
+                const formattedData = formatValues({dataValues, state: state.dataValues});
                 res.send(formattedData);
             }   
+        } catch(err) {
+            res.status(500).send(err);
+        }
+    },
+    async getGames (req, res) {
+        try {
+            const games = await Game.findAll();
+            const formattedData = [];
+            games.map(async (game) => {
+                const state = await State.findByPk(game.stateId);
+                const formattedGame = formatValues(game);
+                formattedData.push({formattedGame, state})});
+            res.send(games); 
         } catch(err) {
             res.status(500).send(err);
         }
