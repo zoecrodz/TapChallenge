@@ -12,10 +12,22 @@ const formatValues = (data) => {
                     description: state.name
                 }
             },
-            cells
+            cells: cells || []
         };
         return formattedData;
 }
+
+const formattedStates = {};
+
+const findStates = async () => {
+    const states = await State.findAll();
+    for (let index = 0; index < states.length; index++) {
+        const element = states[index].dataValues;
+        formattedStates[element.id] = { id: element.id, name: element.name };
+    }
+}
+
+findStates()
 
 const gameController = {
     async findOrCreate (req, res) {
@@ -24,8 +36,8 @@ const gameController = {
             const game = await Game.findOne({ where: { id } } );
             if (game) {
                 const { stateId, dataValues } = game;
-                const state = await State.findByPk(stateId);
-                const foundGame = formatValues({ dataValues, state: state.dataValues });
+                const state = formattedStates[stateId];
+                const foundGame = formatValues({ dataValues, state });
                 res.send(foundGame);
             }
             else {
@@ -43,13 +55,18 @@ const gameController = {
     },
     async getGames (req, res) {
         try {
+            const arrayGames = [];
             const games = await Game.findAll();
-            const formattedData = [];
-            games.map(async (game) => {
-                const state = await State.findByPk(game.stateId);
-                const formattedGame = formatValues(game);
-                formattedData.push({formattedGame, state})});
-            res.send(games); 
+            for (let index = 0; index < games.length; index++) {
+                const state = State.findByPk(games[index].dataValues.stateId)
+                //quería usar este array (formattedStates) comentado que definí más arriba, pero tengo un problema de asincronismo,
+                //no espera a que findStates se ejecute satisfactoriamente, a no ser que genere un cambio en el código.
+                // const state = formattedStates[games[index].dataValues.stateId];
+                const { dataValues } = games[index];
+                const formattedGame = formatValues({ dataValues, state });
+                arrayGames.push(formattedGame);
+            }
+            res.send(arrayGames); 
         } catch(err) {
             res.status(500).send(err);
         }

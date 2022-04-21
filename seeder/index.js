@@ -6,6 +6,7 @@ const statesArray = [{ id: 1, name: 'created' }, { id: 2, name: 'won' }, { id: 3
 const seedFunc = async () => {
     try {
         const newStates = await State.bulkCreate(statesArray, { returning: true } );
+        console.log('Seed terminado!');
         return newStates;
     } catch(err) {
         throw err;
