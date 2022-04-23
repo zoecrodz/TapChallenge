@@ -7,5 +7,6 @@ Para instalar, iniciar el proyecto y seedear base de datos ejecutar los siguient
 -npm i
 -npm start
 -npm run seed (importante para crear los states)
+-npm run test
 
 
